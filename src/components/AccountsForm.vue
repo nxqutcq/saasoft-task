@@ -17,12 +17,18 @@
       <tbody>
         <tr v-for="(account, index) in accountsStore.accounts" :key="index">
           <td>
-            <el-input
-              v-model="account.label"
-              @blur="onLabelBlur(account, index)"
-              :class="{ 'input-error': account.errors?.label }"
-              placeholder="Введите метки через ;"
-            />
+            <el-tooltip
+              content="Введите метки, разделяя их символом ';' (не более 50 символов)"
+              placement="top"
+              effect="dark"
+            >
+              <el-input
+                v-model="account.label"
+                @blur="onLabelBlur(account, index)"
+                :class="{ 'input-error': account.errors?.label }"
+                placeholder="Значение"
+              />
+            </el-tooltip>
           </td>
           <td>
             <el-select
@@ -39,7 +45,7 @@
               v-model="account.login"
               @blur="onLoginBlur(account, index)"
               :class="{ 'input-error': account.errors?.login }"
-              placeholder="Введите логин"
+              placeholder="Значение"
             />
           </td>
           <td v-if="account.type === 'Локальная'">
@@ -48,7 +54,7 @@
               @blur="onPasswordBlur(account, index)"
               :class="{ 'input-error': account.errors?.password }"
               type="password"
-              placeholder="Введите пароль"
+              placeholder="Значение"
             />
           </td>
           <td>

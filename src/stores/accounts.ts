@@ -15,7 +15,7 @@ export const useAccountsStore = defineStore('accounts', {
   }),
   actions: {
     addAccount() {
-      this.accounts.unshift({
+      this.accounts.push({
         label: '',
         labelArray: [],
         type: 'Локальная',
