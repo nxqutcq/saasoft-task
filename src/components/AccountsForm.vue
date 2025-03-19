@@ -67,13 +67,23 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+import { watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useAccountsStore, type Account } from '../stores/accounts'
 
 export default defineComponent({
   setup() {
     const accountsStore = useAccountsStore()
+
+    accountsStore.loadAccounts()
+
+    watch(
+      () => accountsStore.accounts,
+      () => {
+        accountsStore.saveAccounts()
+      },
+      { deep: true }
+    )
 
     const handleAddAccount = () => {
       accountsStore.addAccount()

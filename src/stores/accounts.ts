@@ -29,6 +29,15 @@ export const useAccountsStore = defineStore('accounts', {
     },
     updateAccount(index: number, account: Account) {
       this.accounts[index] = account
-    }
+    },
+    loadAccounts() {
+      const data = localStorage.getItem('accounts')
+      if (data) {
+        this.accounts = JSON.parse(data)
+      }
+    },
+    saveAccounts() {
+      localStorage.setItem('accounts', JSON.stringify(this.accounts))
+    },
   },
 })
