@@ -1,29 +1,30 @@
 <template>
   <div class="accounts-form">
     <header class="header">
-      <h2>Управление учетными записями</h2>
+      <h2>Учетные записи</h2>
       <el-button type="primary" @click="handleAddAccount">+</el-button>
     </header>
-    <div class="items-wrapper">
-      <div
-        v-for="(account, index) in accountsStore.accounts"
-        :key="index"
-        class="account-item"
-      >
-        <div>
-          <label>Метки</label>
-          <div class="form-group">
+    <table class="accounts-table">
+      <thead>
+        <tr>
+          <th>Метки</th>
+          <th>Тип записи</th>
+          <th>Логин</th>
+          <th>Пароль</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(account, index) in accountsStore.accounts" :key="index">
+          <td>
             <el-input
               v-model="account.label"
               @blur="onLabelBlur(account, index)"
               :class="{ 'input-error': account.errors?.label }"
               placeholder="Введите метки через ;"
             />
-          </div>
-        </div>
-        <div>
-          <label>Тип записи</label>
-          <div class="form-group">
+          </td>
+          <td>
             <el-select
               v-model="account.type"
               @change="onTypeChange(account, index)"
@@ -32,22 +33,16 @@
               <el-option label="LDAP" value="LDAP" />
               <el-option label="Локальная" value="Локальная" />
             </el-select>
-          </div>
-        </div>
-        <div>
-          <div class="form-group">
-            <label>Логин</label>
+          </td>
+          <td :colspan="account.type === 'LDAP' ? 2 : 1">
             <el-input
               v-model="account.login"
               @blur="onLoginBlur(account, index)"
               :class="{ 'input-error': account.errors?.login }"
               placeholder="Введите логин"
             />
-          </div>
-        </div>
-        <div>
-          <div class="form-group" v-if="account.type === 'Локальная'">
-            <label>Пароль</label>
+          </td>
+          <td v-if="account.type === 'Локальная'">
             <el-input
               v-model="account.password"
               @blur="onPasswordBlur(account, index)"
@@ -55,19 +50,20 @@
               type="password"
               placeholder="Введите пароль"
             />
-          </div>
-        </div>
-        <el-button type="danger" @click="handleRemoveAccount(index)"
-          >Удалить</el-button
-        >
-      </div>
-    </div>
+          </td>
+          <td>
+            <el-button type="danger" @click="handleRemoveAccount(index)"
+              >Удалить</el-button
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { watch } from 'vue'
+import { defineComponent, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useAccountsStore, type Account } from '../stores/accounts'
 
@@ -130,7 +126,7 @@ export default defineComponent({
 
     const onTypeChange = (account: Account, index: number) => {
       if (account.type === 'LDAP') {
-        account.password = ''
+        account.password = null
         if (account.errors) delete account.errors.password
       }
     }
@@ -155,31 +151,32 @@ export default defineComponent({
 
 <style scoped>
 .accounts-form {
-  margin: 0 auto;
   width: 100%;
+  margin: 0 auto;
 }
 
 .header {
   display: flex;
-  justify-content: start;
   align-items: center;
   gap: 10px;
+  margin-bottom: 1rem;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-  min-width: 200px;
+.accounts-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.accounts-table th,
+.accounts-table td {
+  text-align: left;
+  padding-block: 0.5rem;
+  padding-inline: 0.5rem;
 }
 
 .input-error {
   border: 1px solid red;
   border-radius: 4px;
-}
-
-.account-item {
-  gap: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
 }
 </style>
