@@ -91,7 +91,7 @@ export default defineComponent({
       accountsStore.addAccount()
     }
 
-    const onLabelBlur = (account: Account, index: number) => {
+    const onLabelBlur = (account: Account, _index: number) => {
       if (account.label && account.label.length > 50) {
         account.errors = { ...account.errors, label: 'Максимум 50 символов' }
       } else {
@@ -105,7 +105,7 @@ export default defineComponent({
         : []
     }
 
-    const onLoginBlur = (account: Account, index: number) => {
+    const onLoginBlur = (account: Account, _index: number) => {
       if (!account.login) {
         account.errors = { ...account.errors, login: 'Логин обязателен' }
       } else if (account.login.length > 100) {
@@ -115,7 +115,7 @@ export default defineComponent({
       }
     }
 
-    const onPasswordBlur = (account: Account, index: number) => {
+    const onPasswordBlur = (account: Account, _index: number) => {
       if (account.type === 'Локальная') {
         if (!account.password) {
           account.errors = { ...account.errors, password: 'Пароль обязателен' }
@@ -130,7 +130,7 @@ export default defineComponent({
       }
     }
 
-    const onTypeChange = (account: Account, index: number) => {
+    const onTypeChange = (account: Account, _index: number) => {
       if (account.type === 'LDAP') {
         account.password = null
         if (account.errors) delete account.errors.password
